@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.22512.0
+VisualStudioVersion = 14.0.22522.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{DAAE4C74-D06F-4874-A166-33305D2643CE}"
 EndProject
@@ -127,6 +127,8 @@ EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "XmlFormattersWebSite", "test\WebSites\XmlFormattersWebSite\XmlFormattersWebSite.kproj", "{C3123A70-41C4-4122-AD1C-D35DF8958DD7}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ValidationWebSite", "test\WebSites\ValidationWebSite\ValidationWebSite.kproj", "{87AB84B2-22C1-43C6-BB8A-1D327B446FB0}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ControllersFromServicesWebSite", "test\WebSites\ControllersFromServicesWebSite\ControllersFromServicesWebSite.xproj", "{DB6FC622-97D1-45B2-B573-0646B1D0F873}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Microsoft.AspNet.Mvc.Xml.Test", "test\Microsoft.AspNet.Mvc.Xml.Test\Microsoft.AspNet.Mvc.Xml.Test.kproj", "{22019146-BDFA-442E-8C8E-345FB9644578}"
 EndProject
@@ -730,6 +732,18 @@ Global
 		{C3123A70-41C4-4122-AD1C-D35DF8958DD7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{C3123A70-41C4-4122-AD1C-D35DF8958DD7}.Release|x86.ActiveCfg = Release|Any CPU
 		{C3123A70-41C4-4122-AD1C-D35DF8958DD7}.Release|x86.Build.0 = Release|Any CPU
+		{DB6FC622-97D1-45B2-B573-0646B1D0F873}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB6FC622-97D1-45B2-B573-0646B1D0F873}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB6FC622-97D1-45B2-B573-0646B1D0F873}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{DB6FC622-97D1-45B2-B573-0646B1D0F873}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{DB6FC622-97D1-45B2-B573-0646B1D0F873}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DB6FC622-97D1-45B2-B573-0646B1D0F873}.Debug|x86.Build.0 = Debug|Any CPU
+		{DB6FC622-97D1-45B2-B573-0646B1D0F873}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB6FC622-97D1-45B2-B573-0646B1D0F873}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB6FC622-97D1-45B2-B573-0646B1D0F873}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{DB6FC622-97D1-45B2-B573-0646B1D0F873}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{DB6FC622-97D1-45B2-B573-0646B1D0F873}.Release|x86.ActiveCfg = Release|Any CPU
+		{DB6FC622-97D1-45B2-B573-0646B1D0F873}.Release|x86.Build.0 = Release|Any CPU
 		{22019146-BDFA-442E-8C8E-345FB9644578}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{22019146-BDFA-442E-8C8E-345FB9644578}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22019146-BDFA-442E-8C8E-345FB9644578}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -817,6 +831,7 @@ Global
 		{C3123A70-41C4-4122-AD1C-D35DF8958DD7} = {16703B76-C9F7-4C75-AE6C-53D92E308E3C}
 		{87AB84B2-22C1-43C6-BB8A-1D327B446FB0} = {16703B76-C9F7-4C75-AE6C-53D92E308E3C}
 		{22019146-BDFA-442E-8C8E-345FB9644578} = {3BA657BF-28B1-42DA-B5B0-1C4601FCF7B1}
+		{DB6FC622-97D1-45B2-B573-0646B1D0F873} = {16703B76-C9F7-4C75-AE6C-53D92E308E3C}
 		{AC9BE567-540E-4C70-90C2-AAF021307A80} = {16703B76-C9F7-4C75-AE6C-53D92E308E3C}
 	EndGlobalSection
 EndGlobal
