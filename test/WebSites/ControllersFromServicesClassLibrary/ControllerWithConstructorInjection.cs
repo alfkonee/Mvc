@@ -4,7 +4,7 @@
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
 
-namespace ControllersFromServicesWebSite
+namespace ControllersFromServicesClassLibrary
 {
     public class ConstructorInjectionController
     {

@@ -7,7 +7,7 @@ using Microsoft.Framework.DependencyInjection;
 namespace Microsoft.AspNet.Mvc
 {
     /// <summary>
-    /// A <see cref="IControllerActivator"/> that retrieves controllers as services from the application's
+    /// A <see cref="IControllerActivator"/> that retrieves controllers as services from the request's
     /// <see cref="IServiceProvider"/>.
     /// </summary>
     public class ServiceBasedControllerActivator : IControllerActivator

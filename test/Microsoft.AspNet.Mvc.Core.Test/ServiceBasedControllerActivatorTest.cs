@@ -25,9 +25,10 @@ namespace Microsoft.AspNet.Mvc
                 RequestServices = serviceProvider.Object
             };
             var activator = new ServiceBasedControllerActivator();
-            var actionContext = new ActionContext(new RouteContext(httpContext), 
+            var actionContext = new ActionContext(httpContext,
+                                                  new RouteData(),
                                                   new ActionDescriptor());
-            
+
             // Act
             var instance = activator.Create(actionContext, typeof(DIController));
 
@@ -48,9 +49,10 @@ namespace Microsoft.AspNet.Mvc
                 RequestServices = serviceProvider.Object
             };
             var activator = new ServiceBasedControllerActivator();
-            var actionContext = new ActionContext(new RouteContext(httpContext),
+            var actionContext = new ActionContext(httpContext,
+                                                  new RouteData(),
                                                   new ActionDescriptor());
-            
+
             // Act and Assert
             var ex = Assert.Throws<InvalidOperationException>(
                         () => activator.Create(actionContext, typeof(DIController)));

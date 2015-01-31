@@ -6,7 +6,7 @@
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\AspNet\Microsoft.Web.AspNet.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
-    <ProjectGuid>db6fc622-97d1-45b2-b573-0646b1d0f873</ProjectGuid>
+    <ProjectGuid>983741b2-4424-4ed1-9b03-7675a67230c8</ProjectGuid>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'" Label="Configuration">
   </PropertyGroup>
@@ -14,7 +14,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <SchemaVersion>2.0</SchemaVersion>
-    <DevelopmentServerPort>41600</DevelopmentServerPort>
+    <DevelopmentServerPort>42994</DevelopmentServerPort>
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\AspNet\Microsoft.Web.AspNet.targets" Condition="'$(VSToolsPath)' != ''" />
 </Project>

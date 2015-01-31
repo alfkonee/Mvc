@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.ApplicationModels;
+using Microsoft.AspNet.Mvc.Core;
 using Microsoft.AspNet.Mvc.Filters;
 using Microsoft.AspNet.Mvc.WebApiCompatShim;
 using Microsoft.Framework.DependencyInjection;
@@ -368,10 +369,13 @@ namespace System.Web.Http
 
         private INestedProviderManager<ActionDescriptorProviderContext> CreateProvider()
         {
-            var assemblyProvider = new Mock<IAssemblyProvider>();
-            assemblyProvider
-                .SetupGet(ap => ap.CandidateAssemblies)
-                .Returns(new Assembly[] { typeof(ApiControllerActionDiscoveryTest).Assembly });
+            var controllers = ControllerTypeHeuristics.GetControllers(new[] { GetType().GetTypeInfo().Assembly },
+                                                                      NullLogger.Instance)
+                                                      .Where(typeInfo => typeInfo.Namespace == "System.Web.Http.TestControllers")
+                                                      .ToList();
+            var controllerProvider = new StaticControllerTypeProvider(controllers);
+            var modelBuilder = new DefaultControllerModelBuilder(new DefaultActionModelBuilder(),
+                                                                 NullLoggerFactory.Instance);
 
             var filterProvider = new Mock<IGlobalFilterProvider>();
             filterProvider
@@ -389,8 +393,8 @@ namespace System.Web.Http
                 .Returns(options);
 
             var provider = new ControllerActionDescriptorProvider(
-                assemblyProvider.Object,
-                new NamespaceLimitedActionDiscoveryConventions(),
+                controllerProvider,
+                modelBuilder,
                 filterProvider.Object,
                 optionsAccessor.Object,
                 new NullLoggerFactory());
@@ -400,21 +404,6 @@ namespace System.Web.Http
                 {
                     provider
                 });
-        }
-
-        private class NamespaceLimitedActionDiscoveryConventions : DefaultControllerModelBuilder
-        {
-            public NamespaceLimitedActionDiscoveryConventions()
-                : base(new DefaultActionModelBuilder(), new NullLoggerFactory())
-            {
-            }
-
-            protected override bool IsController(TypeInfo typeInfo)
-            {
-                return
-                    typeInfo.Namespace == "System.Web.Http.TestControllers" &&
-                    base.IsController(typeInfo);
-            }
         }
     }
 }

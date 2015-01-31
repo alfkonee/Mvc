@@ -18,7 +18,8 @@ namespace Microsoft.AspNet.Mvc
         {
             // Arrange
             var activator = new DefaultControllerActivator();
-            var actionContext = new ActionContext(new RouteContext(new DefaultHttpContext()), 
+            var actionContext = new ActionContext(new DefaultHttpContext(),
+                                                  new RouteData(),
                                                   new ActionDescriptor());
             // Act
             var instance = activator.Create(actionContext, type);
@@ -41,7 +42,8 @@ namespace Microsoft.AspNet.Mvc
             {
                 RequestServices = serviceProvider.Object
             };
-            var actionContext = new ActionContext(new RouteContext(httpContext),
+            var actionContext = new ActionContext(httpContext,
+                                                  new RouteData(),
                                                   new ActionDescriptor());
             // Act
             var instance = activator.Create(actionContext, typeof(TypeDerivingFromControllerWithServices));

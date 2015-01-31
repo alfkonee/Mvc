@@ -4,6 +4,7 @@
         "kestrel": "Microsoft.AspNet.Hosting --server Kestrel --server.urls http://localhost:5000"
     },
     "dependencies": {
+        "ControllersFromServicesClassLibrary":  "1.0.0",
         "Kestrel": "1.0.0-*",
         "Microsoft.AspNet.Mvc": "6.0.0-*",
         "Microsoft.AspNet.Mvc.TestConfiguration": "1.0.0",

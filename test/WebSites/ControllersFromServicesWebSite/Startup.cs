@@ -2,8 +2,10 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Reflection;
 using Microsoft.AspNet.Builder;
 using Microsoft.Framework.DependencyInjection;
+using ControllersFromServicesClassLibrary;
 
 #if ASPNET50
 using Autofac;
@@ -21,15 +23,17 @@ namespace ControllersFromServicesWebSite
             app.UseServices(services =>
             {
                 services.AddMvc(configuration)
-                        .WithControllersFromServiceProvider(configuration);
-                
+                        .WithControllersFromServiceProvider(
+                         new[]
+                         {
+                            typeof(TimeScheduleController).GetTypeInfo().Assembly
+                         });
+
                 services.AddTransient<QueryValueService>();
-                services.AddTransient<ConstructorInjectionController>();
 
 #if ASPNET50
                 // Create the autofac container
                 var builder = new ContainerBuilder();
-                builder.RegisterType<ControllerWithAutoWireupProperties>().PropertiesAutowired();
 
                 // Create the container and use the default application services as a fallback
                 AutofacRegistration.Populate(
@@ -41,7 +45,10 @@ namespace ControllersFromServicesWebSite
 #endif
             });
 
-            app.UseMvc();
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute("default", "{controller}/{action}/{id}");
+            });
         }
     }
 }

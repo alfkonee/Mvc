@@ -24,7 +24,8 @@ namespace Microsoft.AspNet.Mvc.Core
             var actionDescriptor = new ActionDescriptor();
             var controllerFactory = new DefaultControllerFactory(Mock.Of<IControllerActivator>());
             var httpContext = new DefaultHttpContext();
-            var actionContext = new ActionContext(new RouteContext(httpContext),
+            var actionContext = new ActionContext(httpContext,
+                                                  new RouteData(),
                                                   actionDescriptor);
 
             // Act and Assert
@@ -45,7 +46,8 @@ namespace Microsoft.AspNet.Mvc.Core
             };
             var httpContext = new DefaultHttpContext();
             httpContext.RequestServices = GetServices();
-            var actionContext = new ActionContext(new RouteContext(httpContext),
+            var actionContext = new ActionContext(httpContext,
+                                                  new RouteData(),
                                                   actionDescriptor);
             var activator = new Mock<IControllerActivator>();
             activator.Setup(a => a.Create(actionContext, typeof(MyController)))
@@ -76,8 +78,7 @@ namespace Microsoft.AspNet.Mvc.Core
             {
                 RequestServices = services
             };
-            var routeContext = new RouteContext(httpContext);
-            var context = new ActionContext(routeContext, actionDescriptor);
+            var context = new ActionContext(httpContext, new RouteData(), actionDescriptor);
             var factory = new DefaultControllerFactory(new DefaultControllerActivator());
 
             // Act
@@ -103,8 +104,7 @@ namespace Microsoft.AspNet.Mvc.Core
             {
                 RequestServices = services
             };
-            var routeContext = new RouteContext(httpContext);
-            var context = new ActionContext(routeContext, actionDescriptor);
+            var context = new ActionContext(httpContext, new RouteData(), actionDescriptor);
             var factory = new DefaultControllerFactory(new DefaultControllerActivator());
 
             // Act
@@ -131,8 +131,7 @@ namespace Microsoft.AspNet.Mvc.Core
             {
                 RequestServices = services
             };
-            var routeContext = new RouteContext(httpContext);
-            var context = new ActionContext(routeContext, actionDescriptor);
+            var context = new ActionContext(httpContext, new RouteData(), actionDescriptor);
             var factory = new DefaultControllerFactory(new DefaultControllerActivator());
 
             // Act
@@ -154,11 +153,11 @@ namespace Microsoft.AspNet.Mvc.Core
             var services = GetServices();
             var urlHelper = services.GetRequiredService<IUrlHelper>();
 
-            var httpContext = new Mock<HttpContext>();
-            httpContext.SetupGet(c => c.RequestServices)
-                       .Returns(services);
-            var routeContext = new RouteContext(httpContext.Object);
-            var context = new ActionContext(routeContext, actionDescriptor);
+            var httpContext = new DefaultHttpContext
+            {
+                RequestServices = services
+            };
+            var context = new ActionContext(httpContext, new RouteData(), actionDescriptor);
             var factory = new DefaultControllerFactory(new DefaultControllerActivator());
 
             // Act
@@ -178,10 +177,11 @@ namespace Microsoft.AspNet.Mvc.Core
                 ControllerTypeInfo = typeof(ControllerWithActivateAndFromServices).GetTypeInfo()
             };
             var services = GetServices();
-            var httpContext = new DefaultHttpContext();
-            httpContext.RequestServices = services;
-            var routeContext = new RouteContext(httpContext);
-            var context = new ActionContext(routeContext, actionDescriptor);
+            var httpContext = new DefaultHttpContext
+            {
+                RequestServices = services
+            };
+            var context = new ActionContext(httpContext, new RouteData(), actionDescriptor);
             var factory = new DefaultControllerFactory(new DefaultControllerActivator());
 
             // Act
@@ -201,10 +201,11 @@ namespace Microsoft.AspNet.Mvc.Core
                 ControllerTypeInfo = typeof(ControllerThatCannotBeActivated).GetTypeInfo()
             };
             var services = GetServices();
-            var httpContext = new DefaultHttpContext();
-            httpContext.RequestServices = services;
-            var routeContext = new RouteContext(httpContext);
-            var context = new ActionContext(routeContext, actionDescriptor);
+            var httpContext = new DefaultHttpContext
+            {
+                RequestServices = services
+            };
+            var context = new ActionContext(httpContext, new RouteData(), actionDescriptor);
             var factory = new DefaultControllerFactory(new DefaultControllerActivator());
 
             // Act and Assert

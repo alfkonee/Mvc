@@ -26,10 +26,8 @@ namespace Microsoft.AspNet.Mvc
         /// <summary>
         /// Initializes a new instance of <see cref="DefaultControllerFactory"/>.
         /// </summary>
-        /// <param name="serviceProvider">Request scoped <see cref="IServiceProvider"/>.</param>
-        /// <param name="typeActivator"><see cref="ITypeActivator"/> used to instantiate types.</param>
-        /// <param name="controllerActivator"><see cref="IControllerActivator"/> used to activate instantiated
-        /// controllers.</param>
+        /// <param name="controllerActivator"><see cref="IControllerActivator"/> used to create controller
+        /// instances.</param>
         public DefaultControllerFactory(IControllerActivator controllerActivator)
         {
             _controllerActivator = controllerActivator;
@@ -61,7 +59,7 @@ namespace Microsoft.AspNet.Mvc
 
             var controllerType = actionDescriptor.ControllerTypeInfo.AsType();
             var controller = _controllerActivator.Create(actionContext, controllerType);
-            Activate(controller, actionContext);
+            ActivateProperties(controller, actionContext);
 
             return controller;
         }
@@ -82,7 +80,7 @@ namespace Microsoft.AspNet.Mvc
         /// </summary>
         /// <param name="controller">The controller to activate.</param>
         /// <param name="context">The context of the executing action.</param>
-        protected virtual void Activate([NotNull] object controller, [NotNull] ActionContext context)
+        protected virtual void ActivateProperties([NotNull] object controller, [NotNull] ActionContext context)
         {
             var controllerType = controller.GetType();
             var controllerTypeInfo = controllerType.GetTypeInfo();
@@ -103,9 +101,12 @@ namespace Microsoft.AspNet.Mvc
         }
 
         /// <summary>
-        /// Returns a lookup of property types to delegates used to activate properties.
+        /// Returns a <see cref="IDictionary{TKey, TValue}"/> of property types to delegates used to activate
+        /// controller properties annotated with <see cref="ActivateAttribute"/>.
         /// </summary>
-        /// <returns>The lookup.</returns>
+        /// <returns>A dictionary containing the property type to activator delegate mapping.</returns>
+        /// <remarks>Override this method to provide custom activation behavior for controller properties
+        /// annotated with <see cref="ActivateAttribute"/>.</remarks>
         protected virtual IDictionary<Type, Func<ActionContext, object>> CreateValueAccessorLookup()
         {
             var dictionary = new Dictionary<Type, Func<ActionContext, object>>

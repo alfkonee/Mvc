@@ -4,7 +4,7 @@
 using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Http;
 
-namespace ControllersFromServicesWebSite
+namespace ControllersFromServicesClassLibrary
 {
     public class QueryValueService
     {

@@ -7,23 +7,22 @@ using Microsoft.Framework.DependencyInjection;
 
 namespace Microsoft.AspNet.Mvc
 {
-    using CreateControllerThunk = Func<IServiceProvider, object[], object>;
-
     /// <summary>
     /// <see cref="IControllerActivator"/> that uses type activation to create controllers.
     /// </summary>
     public class DefaultControllerActivator : IControllerActivator
     {
-        private static readonly Func<Type, CreateControllerThunk> _createFactoryThunk =
+        private static readonly Func<Type, ObjectFactory> _createControllerFactory =
             type => ActivatorUtilities.CreateFactory(type, Type.EmptyTypes);
-        private readonly ConcurrentDictionary<Type, CreateControllerThunk> _controllerThunks =
-            new ConcurrentDictionary<Type, CreateControllerThunk>();
+
+        private readonly ConcurrentDictionary<Type, ObjectFactory> _controllerFactories =
+            new ConcurrentDictionary<Type, ObjectFactory>();
 
         /// <inheritdoc />
         public object Create([NotNull] ActionContext actionContext, [NotNull] Type controllerType)
         {
-            var thunk = _controllerThunks.GetOrAdd(controllerType, _createFactoryThunk);
-            return thunk(actionContext.HttpContext.RequestServices, null);
+            var factory = _controllerFactories.GetOrAdd(controllerType, _createControllerFactory);
+            return factory(actionContext.HttpContext.RequestServices, arguments: null);
         }
     }
 }

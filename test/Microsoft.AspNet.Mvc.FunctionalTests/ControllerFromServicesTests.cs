@@ -2,6 +2,8 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using ControllersFromServicesWebSite;
 using Microsoft.AspNet.Builder;
@@ -15,39 +17,6 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
         private readonly IServiceProvider _provider = TestHelper.CreateServices(
             nameof(ControllersFromServicesWebSite));
         private readonly Action<IApplicationBuilder> _app = new Startup().Configure;
-
-#if ASPNET50
-        // Depends on Autofac behavior that is not available in ASPNETCORE50
-        [Fact]
-        public async Task ControllersAreInitializedFromServiceProvider()
-        {
-            // Arrange
-            var expected = "Value from service: 10";
-            var server = TestServer.Create(_provider, _app);
-            var client = server.CreateClient();
-
-            // Act
-            var response = await client.GetStringAsync("http://localhost/autowireup/service?value=10");
-
-            // Assert
-            Assert.Equal(expected, response);
-        }
-
-        [Fact]
-        public async Task ControllersInitializedFromServicesAreActivated()
-        {
-            // Arrange
-            var expected = "<view-data>some-value</view-data>";
-            var server = TestServer.Create(_provider, _app);
-            var client = server.CreateClient();
-
-            // Act
-            var response = await client.GetStringAsync("http://localhost/autowireup/activated?value=some-value");
-
-            // Assert
-            Assert.Equal(expected, response);
-        }
-#endif
 
         [Fact]
         public async Task ControllersWithConstructorInjectionAreCreatedAndActivated()
@@ -65,5 +34,70 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             Assert.Equal(expected, response);
         }
 
+        [Fact]
+        public async Task TypesDerivingFromControllerAreRegistered()
+        {
+            // Arrange
+            var expected = "No schedules available for 23";
+            var server = TestServer.Create(_provider, _app);
+            var client = server.CreateClient();
+
+            // Act
+            var response = await client.GetStringAsync("http://localhost/schedule/23");
+
+            // Assert
+            Assert.Equal(expected, response);
+        }
+
+        [Fact]
+        public async Task TypesWithControllerSuffixAreRegistered()
+        {
+            // Arrange
+            var expected = "Updated record employee303";
+            var server = TestServer.Create(_provider, _app);
+            var client = server.CreateClient();
+
+            // Act
+            var response = await client.PutAsync("http://localhost/employee/update_records?recordId=employee303", 
+                                                 new StringContent(string.Empty));
+
+            // Assert
+            response.EnsureSuccessStatusCode();
+            Assert.Equal(expected, await response.Content.ReadAsStringAsync());
+        }
+
+        [Fact]
+        public async Task TypesWithControllerSuffixAreConventionalRouted()
+        {
+            // Arrange
+            var expected = "Saved record employee #211";
+            var server = TestServer.Create(_provider, _app);
+            var client = server.CreateClient();
+
+            // Act
+            var response = await client.PostAsync("http://localhost/employeerecords/save/211",
+                                                  new StringContent(string.Empty));
+
+            // Assert
+            response.EnsureSuccessStatusCode();
+            Assert.Equal(expected, await response.Content.ReadAsStringAsync());
+        }
+
+        [Theory]
+        [InlineData("generic")]
+        [InlineData("nested")]
+        [InlineData("not-in-services")]
+        public async Task AddControllersFromServices_UsesControllerDiscoveryContentions(string action)
+        {
+            // Arrange
+            var server = TestServer.Create(_provider, _app);
+            var client = server.CreateClient();
+
+            // Act
+            var response = await client.GetAsync("http://localhost/not-discovered/" + action);
+
+            // Assert
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        }
     }
 }
