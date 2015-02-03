@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using Microsoft.AspNet.Http;
+using Microsoft.AspNet.Http.Core;
 using Microsoft.AspNet.Mvc.ModelBinding;
 using Microsoft.AspNet.Routing;
 
@@ -12,6 +13,21 @@ namespace Microsoft.AspNet.Mvc
     /// </summary>
     public class ActionContext
     {
+        /// <summary>
+        /// Creates a empty <see cref="ActionContext"/>.
+        /// </summary>
+        /// <remarks>
+        /// The default constructor should be used only when <see cref="ActionContext"/> needs to be directly
+        /// instantiated in user codes, such as for unit tests.
+        /// </remarks>
+        public ActionContext()
+        {
+            ActionDescriptor = new ActionDescriptor();
+            ModelState = new ModelStateDictionary();
+            HttpContext = new DefaultHttpContext();
+            RouteData = new RouteData();
+        }
+
         /// <summary>
         /// Creates a new <see cref="ActionContext"/>.
         /// </summary>
@@ -56,23 +72,52 @@ namespace Microsoft.AspNet.Mvc
         }
 
         /// <summary>
-        /// Gets the <see cref="Mvc.ActionDescriptor"/> for the selected action.
+        /// Gets or sets the <see cref="Mvc.ActionDescriptor"/> for the selected action.
         /// </summary>
-        public ActionDescriptor ActionDescriptor { get; }
+        /// <remarks>
+        /// The setter should be used only when <see cref="ActionContext"/> is
+        /// directly instantiated in user codes, such as for unit tests.
+        /// </remarks>
+        public ActionDescriptor ActionDescriptor
+        {
+            get; set;
+        }
 
         /// <summary>
-        /// Gets the <see cref="Http.HttpContext"/> for the current request.
+        /// Gets or sets the <see cref="Http.HttpContext"/> for the current request.
         /// </summary>
-        public HttpContext HttpContext { get; }
+        /// <remarks>
+        /// The setter should be used only when <see cref="ActionContext"/> is
+        /// directly instantiated in user codes, such as for unit tests.
+        /// </remarks>
+        public HttpContext HttpContext
+        {
+            get; set;
+        }
 
         /// <summary>
-        /// Gets the <see cref="ModelStateDictionary"/>.
+        /// Gets or sets the <see cref="ModelStateDictionary"/>.
         /// </summary>
-        public ModelStateDictionary ModelState { get; }
+        /// <remarks>
+        /// <remarks>
+        /// The setter should be used only when <see cref="ActionContext"/> is
+        /// directly instantiated in user codes, such as for unit tests.
+        /// </remarks>
+        public ModelStateDictionary ModelState
+        {
+            get; set;
+        }
 
         /// <summary>
-        /// Gets the <see cref="AspNet.Routing.RouteData"/> for the current request.
+        /// Gets or sets the <see cref="AspNet.Routing.RouteData"/> for the current request.
         /// </summary>
-        public RouteData RouteData { get; }
+        /// <remarks>
+        /// The setter should be used only when <see cref="ActionContext"/> is
+        /// directly instantiated in user codes, such as for unit tests.
+        /// </remarks>
+        public RouteData RouteData
+        {
+            get; set;
+        }
     }
 }

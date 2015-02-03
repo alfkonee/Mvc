@@ -5,6 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Microsoft.AspNet.Http.Core;
+using Microsoft.AspNet.Mvc.ModelBinding;
+using Microsoft.AspNet.Routing;
 using Xunit;
 
 namespace Microsoft.AspNet.Mvc
@@ -421,6 +424,36 @@ namespace Microsoft.AspNet.Mvc
 
             // Act && Assert
             Assert.Throws<ArgumentException>(() => controller.Redirect_Action(null));
+        }
+
+        [Fact]
+        public void ControllerActionContext_ReturnsNotNull()
+        {
+            // Arrange && Act
+            var controller = new TestabilityController();
+
+            // Assert
+            Assert.NotNull(controller.ActionContext);
+            Assert.NotNull(controller.ActionContext.ActionDescriptor);
+            Assert.NotNull(controller.ActionContext.HttpContext);
+            Assert.NotNull(controller.ActionContext.ModelState);
+            Assert.NotNull(controller.ActionContext.RouteData);
+        }
+
+        [Fact]
+        public void ActionContextDefaultConstructor_CanBeUsedControllerActionContext()
+        {
+            // Arrange
+            var actionContext = new ActionContext();
+            var controller = new TestabilityController();
+
+            // Act
+            controller.ActionContext = actionContext;
+
+            // Assert
+            Assert.Equal(actionContext.HttpContext, controller.Context);
+            Assert.Equal(actionContext.RouteData, controller.RouteData);
+            Assert.Equal(actionContext.ModelState, controller.ModelState);
         }
 
         public static IEnumerable<object[]> TestabilityViewTestData
