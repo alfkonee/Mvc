@@ -5,9 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using Microsoft.AspNet.Http.Core;
+using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc.ModelBinding;
 using Microsoft.AspNet.Routing;
+using Moq;
 using Xunit;
 
 namespace Microsoft.AspNet.Mvc
@@ -441,7 +442,7 @@ namespace Microsoft.AspNet.Mvc
         }
 
         [Fact]
-        public void ActionContextDefaultConstructor_CanBeUsedControllerActionContext()
+        public void ActionContextDefaultConstructor_CanBeUsedForControllerActionContext()
         {
             // Arrange
             var actionContext = new ActionContext();
@@ -454,6 +455,35 @@ namespace Microsoft.AspNet.Mvc
             Assert.Equal(actionContext.HttpContext, controller.Context);
             Assert.Equal(actionContext.RouteData, controller.RouteData);
             Assert.Equal(actionContext.ModelState, controller.ModelState);
+        }
+
+        [Fact]
+        public void ActionContextSetters_CanBeUsedWithControllerActionContext()
+        {
+            var actionDescriptor = new Mock<ActionDescriptor>();
+            var httpContext = new Mock<HttpContext>();
+            var routeData = new Mock<RouteData>();
+            var modelState = new Mock<ModelStateDictionary>();
+
+            // Arrange
+            var actionContext = new ActionContext()
+            {
+                ActionDescriptor = actionDescriptor.Object,
+                HttpContext = httpContext.Object,
+                RouteData = routeData.Object,
+                ModelState = modelState.Object,
+            };
+
+            var controller = new TestabilityController();
+
+            // Act
+            controller.ActionContext = actionContext;
+
+            // Assert
+            Assert.Equal(httpContext.Object, controller.Context);
+            Assert.Equal(routeData.Object, controller.RouteData);
+            Assert.Equal(modelState.Object, controller.ModelState);
+            Assert.Equal(actionDescriptor.Object, actionContext.ActionDescriptor);
         }
 
         public static IEnumerable<object[]> TestabilityViewTestData
