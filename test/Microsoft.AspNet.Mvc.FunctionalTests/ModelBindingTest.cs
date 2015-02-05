@@ -1529,5 +1529,55 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var body = await response.Content.ReadAsStringAsync();
             Assert.Equal(expectedContent, body);
         }
+
+        [Fact]
+        public async Task OverriddenMetadataProvider_CanChangeAdditionalValues()
+        {
+            // Arrange
+            var server = TestServer.Create(_services, _app);
+            var client = server.CreateClient();
+            var url = "http://localhost/AdditionalValues";
+            var expectedDictionary = new Dictionary<string, string>
+            {
+                { "key1", "7d6d0de2-8d59-49ac-99cc-881423b75a76" },
+                { "key2", "value2" },
+            };
+
+            // Act
+            var response = await client.GetAsync(url);
+
+            // Assert
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var dictionary = JsonConvert.DeserializeObject<IDictionary<string, string>>(responseContent);
+            Assert.Equal(expectedDictionary, dictionary);
+        }
+
+        [Fact]
+        public async Task OverriddenMetadataProvider_CanUseAttributesToChangeAdditionalValues()
+        {
+            // Arrange
+            var server = TestServer.Create(_services, _app);
+            var client = server.CreateClient();
+            var url = "http://localhost/GroupNames";
+            var expectedDictionary = new Dictionary<string, string>
+            {
+                { "Model", "MakeAndModelGroup" },
+                { "Make", "MakeAndModelGroup" },
+                { "Vin", null },
+                { "Year", null },
+                { "InspectedDates", null },
+                { "LastUpdatedTrackingId", "TrackingIdGroup" },
+            };
+
+            // Act
+            var response = await client.GetAsync(url);
+
+            // Assert
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var dictionary = JsonConvert.DeserializeObject<IDictionary<string, string>>(responseContent);
+            Assert.Equal(expectedDictionary, dictionary);
+        }
     }
 }
