@@ -17,15 +17,11 @@ namespace Microsoft.AspNet.Mvc
         /// Creates a empty <see cref="ActionContext"/>.
         /// </summary>
         /// <remarks>
-        /// The default constructor should be used only when <see cref="ActionContext"/> needs to be directly
-        /// instantiated in user codes, such as for unit tests.
+        /// The default constructor is provided for unit test purposes only. 
         /// </remarks>
         public ActionContext()
         {
-            ActionDescriptor = new ActionDescriptor();
             ModelState = new ModelStateDictionary();
-            HttpContext = new DefaultHttpContext();
-            RouteData = new RouteData();
         }
 
         /// <summary>
@@ -75,8 +71,7 @@ namespace Microsoft.AspNet.Mvc
         /// Gets or sets the <see cref="Mvc.ActionDescriptor"/> for the selected action.
         /// </summary>
         /// <remarks>
-        /// The setter should be used only when <see cref="ActionContext"/> is
-        /// directly instantiated in user codes, such as for unit tests.
+        /// The property setter is provided for unit test purposes only.
         /// </remarks>
         public ActionDescriptor ActionDescriptor
         {
@@ -87,8 +82,7 @@ namespace Microsoft.AspNet.Mvc
         /// Gets or sets the <see cref="Http.HttpContext"/> for the current request.
         /// </summary>
         /// <remarks>
-        /// The setter should be used only when <see cref="ActionContext"/> is
-        /// directly instantiated in user codes, such as for unit tests.
+        /// The property setter is provided for unit test purposes only.
         /// </remarks>
         public HttpContext HttpContext
         {
@@ -96,24 +90,18 @@ namespace Microsoft.AspNet.Mvc
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="ModelStateDictionary"/>.
+        /// Gets the <see cref="ModelStateDictionary"/>.
         /// </summary>
-        /// <remarks>
-        /// <remarks>
-        /// The setter should be used only when <see cref="ActionContext"/> is
-        /// directly instantiated in user codes, such as for unit tests.
-        /// </remarks>
         public ModelStateDictionary ModelState
         {
-            get; set;
+            get;
         }
 
         /// <summary>
         /// Gets or sets the <see cref="AspNet.Routing.RouteData"/> for the current request.
         /// </summary>
         /// <remarks>
-        /// The setter should be used only when <see cref="ActionContext"/> is
-        /// directly instantiated in user codes, such as for unit tests.
+        /// The property setter is provided for unit test purposes only.
         /// </remarks>
         public RouteData RouteData
         {

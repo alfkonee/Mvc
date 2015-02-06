@@ -435,10 +435,10 @@ namespace Microsoft.AspNet.Mvc
 
             // Assert
             Assert.NotNull(controller.ActionContext);
-            Assert.NotNull(controller.ActionContext.ActionDescriptor);
-            Assert.NotNull(controller.ActionContext.HttpContext);
             Assert.NotNull(controller.ActionContext.ModelState);
-            Assert.NotNull(controller.ActionContext.RouteData);
+            Assert.Null(controller.ActionContext.ActionDescriptor);
+            Assert.Null(controller.ActionContext.HttpContext);
+            Assert.Null(controller.ActionContext.RouteData);
         }
 
         [Fact]
@@ -460,18 +460,16 @@ namespace Microsoft.AspNet.Mvc
         [Fact]
         public void ActionContextSetters_CanBeUsedWithControllerActionContext()
         {
+            // Arrange
             var actionDescriptor = new Mock<ActionDescriptor>();
             var httpContext = new Mock<HttpContext>();
             var routeData = new Mock<RouteData>();
-            var modelState = new Mock<ModelStateDictionary>();
 
-            // Arrange
             var actionContext = new ActionContext()
             {
                 ActionDescriptor = actionDescriptor.Object,
                 HttpContext = httpContext.Object,
                 RouteData = routeData.Object,
-                ModelState = modelState.Object,
             };
 
             var controller = new TestabilityController();
@@ -482,8 +480,28 @@ namespace Microsoft.AspNet.Mvc
             // Assert
             Assert.Equal(httpContext.Object, controller.Context);
             Assert.Equal(routeData.Object, controller.RouteData);
-            Assert.Equal(modelState.Object, controller.ModelState);
+            Assert.Equal(actionContext.ModelState, controller.ModelState);
             Assert.Equal(actionDescriptor.Object, actionContext.ActionDescriptor);
+        }
+
+        [Fact]
+        public void ActionContextModelState_ShouldBeSameAsViewDataAndControllerModelState()
+        {
+            // Arragne
+            var actionContext = new ActionContext();
+            var controller1 = new Controller();
+            var controller2 = new Controller();
+
+            // Act
+            controller2.ActionContext = actionContext;
+
+            // Assert
+            Assert.Equal(controller1.ModelState, controller1.ActionContext.ModelState);
+            Assert.Equal(controller1.ModelState, controller1.ViewData.ModelState);
+
+            Assert.Equal(actionContext.ModelState, controller2.ModelState);
+            Assert.Equal(actionContext.ModelState, controller2.ActionContext.ModelState);
+            Assert.Equal(actionContext.ModelState, controller2.ViewData.ModelState);
         }
 
         public static IEnumerable<object[]> TestabilityViewTestData

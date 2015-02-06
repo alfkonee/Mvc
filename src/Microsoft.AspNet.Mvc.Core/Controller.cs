@@ -71,13 +71,11 @@ namespace Microsoft.AspNet.Mvc
         }
 
         /// <summary>
-        /// Gets or Sets the <see cref="Mvc.ActionContext"/> object for execution of action which has been selected
-        /// as part of an HTTP request.
+        /// Gets or sets the <see cref="Mvc.ActionContext"/> object.
         /// </summary>
         /// <remarks>
-        /// By default, this property is activated when <see cref="IControllerActivator"/> activates controllers.
-        /// However, when controllers are directly instantiated in user codes, this property is initialized with
-        /// an empty <see cref="Mvc.ActionContext"/>.
+        /// <see cref="IControllerActivator"/> activates this property while activating controllers. If user codes 
+        /// directly instantiate controllers, the getter returns an empty <see cref="Mvc.ActionContext"/>.
         /// </remarks>
         [Activate]
         public ActionContext ActionContext
@@ -92,8 +90,7 @@ namespace Microsoft.AspNet.Mvc
             {
                 if (value == null)
                 {
-                    throw
-                        new ArgumentException(Resources.ArgumentCannotBeNullOrEmpty, nameof(ActionContext));
+                    throw new ArgumentNullException(nameof(value));
                 }
 
                 _actionContext = value;
