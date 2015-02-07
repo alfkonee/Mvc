@@ -74,7 +74,7 @@ namespace Microsoft.AspNet.Mvc
         /// Gets or sets the <see cref="Mvc.ActionContext"/> object.
         /// </summary>
         /// <remarks>
-        /// <see cref="IControllerActivator"/> activates this property while activating controllers. If user codes 
+        /// <see cref="IControllerActivator"/> activates this property while activating controllers. If user codes
         /// directly instantiate controllers, the getter returns an empty <see cref="Mvc.ActionContext"/>.
         /// </remarks>
         [Activate]

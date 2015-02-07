@@ -487,7 +487,7 @@ namespace Microsoft.AspNet.Mvc
         [Fact]
         public void ActionContextModelState_ShouldBeSameAsViewDataAndControllerModelState()
         {
-            // Arragne
+            // Arrange
             var actionContext = new ActionContext();
             var controller1 = new Controller();
             var controller2 = new Controller();

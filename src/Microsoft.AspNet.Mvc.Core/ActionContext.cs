@@ -17,7 +17,7 @@ namespace Microsoft.AspNet.Mvc
         /// Creates a empty <see cref="ActionContext"/>.
         /// </summary>
         /// <remarks>
-        /// The default constructor is provided for unit test purposes only. 
+        /// The default constructor is provided for unit test purposes only.
         /// </remarks>
         public ActionContext()
         {
